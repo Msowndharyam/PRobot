@@ -1,11 +1,25 @@
 import os
-from pylint import epylint as lint
+# from pylint import epylint as lint
+import subprocess
 
 def analyze_code(file_path):
-    (pylint_stdout, pylint_stderr) = lint.py_run(file_path, return_std=True)
-    print(pylint_stdout.getvalue())
-    print(pylint_stderr.getvalue())
-
+    """
+    Runs pylint on the specified file and prints the output.
+    """
+    try:
+        #run pylint as a subprocess
+        result = subprocess.run(
+            ["pylint", file_path],
+            capture_output=True,
+            text=True,
+        )
+        #print pylint output
+        print("Pylint Output:")
+        print(result.stdout)
+        print("Pylint Errors:")
+        print(result.stderr)
+    except FileNotFoundError:
+        print("Pylint is not installed or not found in the environment.")
+        
 if __name__ == "__main__":
-    #eg:analyze a Python file
-    analyze_code("path/to/my/code.py") #need to work on this
+    analyze_code("analysis/example.py")#need to work on this
